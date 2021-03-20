@@ -1,5 +1,6 @@
 const { expect } = require("chai");
 const { By, until } = require("selenium-webdriver");
+const { NoSuchElementError } = require("selenium-webdriver/lib/error");
 const petStoreUrl = "https://petstore.octoperf.com";
 const storeMainMenuUrl = `${petStoreUrl}/actions/Catalog.action`;
 
@@ -49,7 +50,11 @@ async function moveToItemPageFromProductPage(driver, itemId) {
   await driver.wait(until.urlContains(`viewItem=&itemId=${itemId}`));
 }
 
-async function addItemToShoppingCart(driver) {
+async function addItemToShoppingCart(driver, link, order) {
+  await moveToSpecifiedCatalogPage(driver, link, order.category.id);
+  await moveToProductPageFromCatalogPage(driver, order.product.id);
+  await moveToItemPageFromProductPage(driver, order.item.id);
+
   let addToCartLink = await driver.findElement(By.linkText("Add to Cart"));
   expect(await addToCartLink.isDisplayed()).to.be.true;
   await addToCartLink.click();
@@ -70,21 +75,47 @@ async function moveToShoppingCartPage(driver) {
 }
 
 async function checkDisplayedItemIdAndQuantityInShoppingCart(
+    driver,
+    itemId,
+    quantity
+  ) {
+    expect(
+      await driver.findElement(By.xpath("//*[@id='Cart']/h2")).getText()
+    ).to.be.eql("Shopping Cart");
+  
+    expect(await driver.findElement(By.linkText(itemId)).isDisplayed()).to.be
+      .true;
+    expect(
+      await driver
+        .findElement(By.xpath(`//input[@name='${itemId}']`))
+        .getAttribute("value")
+    ).to.be.eql(quantity.toString());
+  }
+
+async function checkDisplayedItemDetailsInShoppingCart(
   driver,
-  itemId,
-  quantity
+  order,
+  totalPrice,
+  rowText
 ) {
   expect(
     await driver.findElement(By.xpath("//*[@id='Cart']/h2")).getText()
   ).to.be.eql("Shopping Cart");
 
-  expect(await driver.findElement(By.linkText(itemId)).isDisplayed()).to.be
+  expect(await driver.findElement(By.linkText(order.item.id)).isDisplayed()).to.be
     .true;
+  expect(rowText).to.have.string(order.product.id);
   expect(
     await driver
-      .findElement(By.xpath(`//input[@name='${itemId}']`))
+      .findElement(By.xpath(`//input[@name='${order.item.id}']`))
       .getAttribute("value")
-  ).to.be.eql(quantity.toString());
+  ).to.be.eql(order.item.quantity.toString());
+  expect(rowText).to.have.string(` $${totalPrice}`);
+  checkForValueInText(
+    order.item,
+    ["quantity"],
+    rowText
+  );
 }
 
 async function proceedToCheckoutFromCart(driver) {
@@ -199,9 +230,17 @@ async function inputProfileInfoInRegstrationPage(driver, profileInfoObject) {
   }
 }
 
-async function clickSaveAccountInformationLink(driver) {
+async function clickSaveAccountInformationLinkForCreatingNewAccount(driver) {
   let saveAccountInfoLink = await driver.findElement(
     By.xpath("//input[@name='newAccount']")
+  );
+  expect(await saveAccountInfoLink.isDisplayed()).to.be.true;
+  await saveAccountInfoLink.click();
+}
+
+async function clickSaveAccountInformationLinkForEditingAccount(driver) {
+  let saveAccountInfoLink = await driver.findElement(
+    By.xpath("//input[@name='editAccount']")
   );
   expect(await saveAccountInfoLink.isDisplayed()).to.be.true;
   await saveAccountInfoLink.click();
@@ -380,9 +419,9 @@ function checkForValueInText(objectToCheck, skipChecks, rowsText) {
       continue;
     }
 
-    if ("dollarPrice" == objectKey) {
+    if ("price" == objectKey) {
       expect(rowsText).to.have.string(` $${objectToCheck[objectKey]}`);
-    } else if ("itemId" == objectKey) {
+    } else if ("id" == objectKey) {
       expect(rowsText).to.have.string(`${objectToCheck[objectKey]}`);
     } else {
       expect(rowsText).to.have.string(` ${objectToCheck[objectKey]}`);
@@ -406,11 +445,11 @@ async function signout(driver) {
       await driver.findElement(By.xpath("//a[text()='Sign In']"))
     )
   );
-  await driver.wait(
-    until.elementIsNotVisible(
-      await driver.findElement(By.xpath("//a[text()='My Account']"))
-    )
-  );
+  await driver
+    .findElement(By.xpath("//a[text()='My Account']"))
+    .then(null, function (err) {
+      expect(err.name).to.be.eql(NoSuchElementError.name);
+    });
   await driver.wait(until.urlIs(storeMainMenuUrl));
 }
 
@@ -449,6 +488,11 @@ async function signinWithValidAuthInfo(driver, username, password) {
   await driver.wait(until.urlIs(storeMainMenuUrl));
 }
 
+async function moveToMyAccountPage(driver) {
+  await driver.findElement(By.xpath("//a[text()='My Account']")).click();
+  await driver.wait(until.urlContains("editAccountForm="));
+}
+
 module.exports = {
   accessTopPage: accessTopPage,
   enterToStore: enterToStore,
@@ -458,12 +502,14 @@ module.exports = {
   addItemToShoppingCart: addItemToShoppingCart,
   moveToShoppingCartPage: moveToShoppingCartPage,
   checkDisplayedItemIdAndQuantityInShoppingCart: checkDisplayedItemIdAndQuantityInShoppingCart,
+  checkDisplayedItemDetailsInShoppingCart: checkDisplayedItemDetailsInShoppingCart,
   proceedToCheckoutFromCart: proceedToCheckoutFromCart,
   moveToRegisterNewAccountPage: moveToRegisterNewAccountPage,
   inputUserInfoInRegstrationPage: inputUserInfoInRegstrationPage,
   inputAccountInfoInRegstrationPage: inputAccountInfoInRegstrationPage,
   inputProfileInfoInRegstrationPage: inputProfileInfoInRegstrationPage,
-  clickSaveAccountInformationLink: clickSaveAccountInformationLink,
+  clickSaveAccountInformationLinkForCreatingNewAccount: clickSaveAccountInformationLinkForCreatingNewAccount,
+  clickSaveAccountInformationLinkForEditingAccount: clickSaveAccountInformationLinkForEditingAccount,
   inputPaymentDetailsToOrderItems: inputPaymentDetailsToOrderItems,
   checkBillingAddressIsSameWithAccountInfo: checkBillingAddressIsSameWithAccountInfo,
   checkShippingAddressIsSameWithAccountInfo: checkShippingAddressIsSameWithAccountInfo,
@@ -473,4 +519,5 @@ module.exports = {
   signout: signout,
   moveToSignInPage: moveToSignInPage,
   signinWithValidAuthInfo: signinWithValidAuthInfo,
+  moveToMyAccountPage: moveToMyAccountPage,
 };
