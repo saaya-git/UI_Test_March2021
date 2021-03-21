@@ -377,7 +377,7 @@ describe("Successful End-to-end customer journey of purchasing 3 Products", func
   });
 
   describe("Sign in again to check the ordered information", function () {
-    it("Sign out --> This will fail because 'Sign Out' link is not displayed in the page header after the user has registered their new account.", async function () {
+    it("Sign out", async function () {
       await commonFunctions.signout(driver);
     });
 
@@ -403,7 +403,7 @@ describe("Successful End-to-end customer journey of purchasing 3 Products", func
       );
     });
 
-    it("The order information displayed in My Orders page should be correct --> This will fail because ordered time does not show its correct time(it is always displayed as 12:00:00)", async function () {
+    it("The order information displayed in My Orders page should be correct", async function () {
       expect(
         await driver
           .findElement(
@@ -530,7 +530,7 @@ describe("Input only User Information with account information empty and try to 
       .clear();
   });
 
-  it("Save the account information and verify that no page transition took place due to invalid user input --> This will fail(internal server error) because there's no input validation", async function () {
+  it("Save the account information and verify that no page transition took place due to invalid user input", async function () {
     await commonFunctions.clickSaveAccountInformationLinkForCreatingNewAccount(
       driver
     );
@@ -605,7 +605,7 @@ describe("Negative value given to item quantity", function () {
     );
   });
 
-  it("Add the same item again and it should be added to the shopping cart --> This will fail because there's a bug with handling or validating expected boundary values", async function () {
+  it("Add the same item again and it should be added to the shopping cart", async function () {
     await commonFunctions.addItemToShoppingCart(
       driver,
       "#QuickLinks > a:nth-child(5) > img",
@@ -657,7 +657,7 @@ describe("Change user account password", function () {
     );
   });
 
-  it("Sign out and should succeed to sign in with the new password --> This will fail because the password has not actually changed", async function () {
+  it("Sign out and should succeed to sign in with the new password", async function () {
     await commonFunctions.signout(driver);
     await commonFunctions.moveToSigninPage(driver);
     await commonFunctions.signinWithValidUsernameAndPassword(
@@ -763,7 +763,7 @@ describe("Sign in and sign out with items in the shopping cart", function () {
     );
   });
 
-  it("Sign out and check the shopping cart. Items should remain in the cart. --> This will fail because no items remains in the cart.", async function () {
+  it("Sign out and check the shopping cart. Items should remain in the cart.", async function () {
     await commonFunctions.signout(driver);
     await commonFunctions.moveToShoppingCartPage(driver);
 
@@ -779,7 +779,7 @@ describe("Sign in and sign out with items in the shopping cart", function () {
     );
   });
 
-  it("Sign in again and check the shopping cart. Items should remain in the cart. --> This will fail because no items remains in the cart.", async function () {
+  it("Sign in again and check the shopping cart. Items should remain in the cart.", async function () {
     await commonFunctions.moveToSigninPage(driver);
     await commonFunctions.signinWithValidUsernameAndPassword(
       driver,

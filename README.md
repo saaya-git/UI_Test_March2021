@@ -15,6 +15,9 @@ After cloning this repository run the following command in the repository folder
 $ npm install
 ```
 
+Note that the above operation should install chromedriver automatically.
+If however you experience any issues please download chromedriver manually from https://chromedriver.storage.googleapis.com/index.html?path=89.0.4389.23/ and place the binary file in the repository's main folder.
+
 ## Run test
 
 Run this command in the repository folder to perform the automated tests.
@@ -65,29 +68,30 @@ $ npm run test
 ### Bugs that were found during manual adhoc testing
 
 1. Item page
-    - Typo: Dalmation should be Dalmatian
-    - Wrong images are used in Fish/Dogs/Cats product item pages.
+   - Typo: Dalmation should be Dalmatian
+   - Wrong images are used in Fish/Dogs/Cats product item pages.
 1. Sign In page
-    - Security issue. "j2ee" is automatically filled in the password text area.
-    - On the login page the text "Username" is used whilst on the registration page the text "User ID" is used. This can be confusing for users as they may confused "Username" to be their "First Name" which is also on the registration page.
+   - Security issue. "j2ee" is automatically filled in the password text area.
+   - On the login page the text "Username" is used whilst on the registration page the text "User ID" is used. This can be confusing for users as they may confused "Username" to be their "First Name" which is also on the registration page.
 1. New account registration page
-    - Internal Server Error occurs when registering a user when the same User ID already exists.
+   - Internal Server Error occurs when registering a user when the same User ID already exists.
 1. My Account page
-    - Changes made in this page (password, Account Information and Profile Information) are not saved. This can be confirmed after signing out and signing in to the "My Account" page again.
-    - The animal shown within "MyBanner" does not change when the user changes their Favorite Category.
-    - The 'Japanese' option as part of the Language Preference does not seem to change the UI language to Japanese.
-    - My List feature is not available in the page even after the user has enabled this feature. (Need to check the specification of this feature)
+   - Changes made in this page (password, Account Information and Profile Information) are not saved. This can be confirmed after signing out and signing in to the "My Account" page again.
+   - The animal shown within "MyBanner" does not change when the user changes their Favorite Category.
+   - The 'Japanese' option as part of the Language Preference does not seem to change the UI language to Japanese.
+   - My List feature is not available in the page even after the user has enabled this feature. (Need to check the specification of this feature)
 1. Shopping cart
-    - Users can input and update the value of quantity to be larger than the maximum stock available.
+   - Users can input and update the value of quantity to be larger than the maximum stock available.
 1. Final Checkout page
-    - The confirmation button on the page is "confirm" however the instructions at the top of the page uses the word "continue".
-      > Please confirm the information below and then press **continue**...</br>
+   - The confirmation button on the page is "confirm" however the instructions at the top of the page uses the word "continue".
+     > Please confirm the information below and then press **continue**...</br>
 1. Help page
-    - Some of the descriptions are wrong. 
-        - e.g. Searching the Catalog --> search field is not in the middle of the banner
-          > You search for products by typing the product name in search field **in the middle of the banner**.
+   - Some of the descriptions are wrong.
+     - e.g. Searching the Catalog --> search field is not in the middle of the banner
+       > You search for products by typing the product name in search field **in the middle of the banner**.
 
 ## Possible tests that can be performed but not created due to time constraints
 
 1. Performance testing
-2. Security testing 
+2. Security testing
+3. Testing with different types of browsers

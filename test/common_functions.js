@@ -75,22 +75,22 @@ async function moveToShoppingCartPage(driver) {
 }
 
 async function checkDisplayedItemIdAndQuantityInShoppingCart(
-    driver,
-    itemId,
-    quantity
-  ) {
-    expect(
-      await driver.findElement(By.xpath("//*[@id='Cart']/h2")).getText()
-    ).to.be.eql("Shopping Cart");
-  
-    expect(await driver.findElement(By.linkText(itemId)).isDisplayed()).to.be
-      .true;
-    expect(
-      await driver
-        .findElement(By.xpath(`//input[@name='${itemId}']`))
-        .getAttribute("value")
-    ).to.be.eql(quantity.toString());
-  }
+  driver,
+  itemId,
+  quantity
+) {
+  expect(
+    await driver.findElement(By.xpath("//*[@id='Cart']/h2")).getText()
+  ).to.be.eql("Shopping Cart");
+
+  expect(await driver.findElement(By.linkText(itemId)).isDisplayed()).to.be
+    .true;
+  expect(
+    await driver
+      .findElement(By.xpath(`//input[@name='${itemId}']`))
+      .getAttribute("value")
+  ).to.be.eql(quantity.toString());
+}
 
 async function checkDisplayedItemDetailsInShoppingCart(
   driver,
@@ -102,8 +102,8 @@ async function checkDisplayedItemDetailsInShoppingCart(
     await driver.findElement(By.xpath("//*[@id='Cart']/h2")).getText()
   ).to.be.eql("Shopping Cart");
 
-  expect(await driver.findElement(By.linkText(order.item.id)).isDisplayed()).to.be
-    .true;
+  expect(await driver.findElement(By.linkText(order.item.id)).isDisplayed()).to
+    .be.true;
   expect(rowText).to.have.string(order.product.id);
   expect(
     await driver
@@ -111,11 +111,7 @@ async function checkDisplayedItemDetailsInShoppingCart(
       .getAttribute("value")
   ).to.be.eql(order.item.quantity.toString());
   expect(rowText).to.have.string(` $${totalPrice}`);
-  checkForValueInText(
-    order.item,
-    ["quantity"],
-    rowText
-  );
+  checkForValueInText(order.item, ["quantity"], rowText);
 }
 
 async function proceedToCheckoutFromCart(driver) {
