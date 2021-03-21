@@ -91,7 +91,8 @@ describe("Successful End-to-end customer journey of purchasing 3 Products", func
     zip: "shippingZip",
     country: "shippingCountry",
   };
-  const storeMainMenuUrl = "https://petstore.octoperf.com/actions/Catalog.action";
+  const storeMainMenuUrl =
+    "https://petstore.octoperf.com/actions/Catalog.action";
   let driver;
   let orderId;
   let orderDate;
@@ -117,7 +118,7 @@ describe("Successful End-to-end customer journey of purchasing 3 Products", func
   });
 
   describe("Add orders into shopping cart", function () {
-    it("Add one Spotless Koi to shopping cart", async function () {
+    it("Add one Spotless Koi to the shopping cart", async function () {
       await commonFunctions.addItemToShoppingCart(
         driver,
         "#QuickLinks > a:nth-child(1) > img",
@@ -125,7 +126,7 @@ describe("Successful End-to-end customer journey of purchasing 3 Products", func
       );
     });
 
-    it("Check Spotless Koi has added to cart", async function () {
+    it("Spotless Koi should be added to the cart", async function () {
       await commonFunctions.checkDisplayedItemIdAndQuantityInShoppingCart(
         driver,
         orders.order1.item.id,
@@ -133,7 +134,7 @@ describe("Successful End-to-end customer journey of purchasing 3 Products", func
       );
     });
 
-    it("Add one Spotted Adult Female Dalmation to shopping cart", async function () {
+    it("Add one Spotted Adult Female Dalmatian to the shopping cart", async function () {
       await commonFunctions.addItemToShoppingCart(
         driver,
         "#QuickLinks > a:nth-child(3) > img",
@@ -141,7 +142,7 @@ describe("Successful End-to-end customer journey of purchasing 3 Products", func
       );
     });
 
-    it("Check Spotted Adult Female Dalmation has added to cart", async function () {
+    it("Spotted Adult Female Dalmatian should be added to the cart", async function () {
       await commonFunctions.checkDisplayedItemIdAndQuantityInShoppingCart(
         driver,
         orders.order2.item.id,
@@ -149,7 +150,7 @@ describe("Successful End-to-end customer journey of purchasing 3 Products", func
       );
     });
 
-    it("Add one Tailless Manx to shopping cart", async function () {
+    it("Add one Tailless Manx to the shopping cart", async function () {
       await commonFunctions.addItemToShoppingCart(
         driver,
         "#QuickLinks > a:nth-child(7) > img",
@@ -157,7 +158,7 @@ describe("Successful End-to-end customer journey of purchasing 3 Products", func
       );
     });
 
-    it("Check Tailless Manx has added to cart", async function () {
+    it("Tailless Manx should be added to the cart", async function () {
       await commonFunctions.checkDisplayedItemIdAndQuantityInShoppingCart(
         driver,
         orders.order3.item.id,
@@ -167,15 +168,12 @@ describe("Successful End-to-end customer journey of purchasing 3 Products", func
   });
 
   describe("Proceed to checkout and register a new user account", function () {
-    it("Proceed to checkout from shopping cart", async function () {
+    it("Proceed to checkout and move to register a new account page", async function () {
       await commonFunctions.proceedToCheckoutFromCart(driver);
-    });
-
-    it("Click link to register new account", async function () {
       await commonFunctions.moveToRegisterNewAccountPage(driver);
     });
 
-    it("Input Personal Information and save account information", async function () {
+    it("Input Personal Information and complete creating a new account", async function () {
       await commonFunctions.inputUserInfoInRegstrationPage(
         driver,
         user.userInfo
@@ -195,8 +193,8 @@ describe("Successful End-to-end customer journey of purchasing 3 Products", func
     });
   });
 
-  describe("Proceed to checkout again from shopping cart and complete the order", function () {
-    it("Proceed to Checkout again from shopping cart", async function () {
+  describe("Proceed to checkout from shopping cart and complete checkout process to submit the order", function () {
+    it("Move to payment page", async function () {
       await commonFunctions.moveToShoppingCartPage(driver);
 
       const itemsInCartTable = await driver
@@ -232,20 +230,17 @@ describe("Successful End-to-end customer journey of purchasing 3 Products", func
     });
 
     it("Input Payment Details", async function () {
-      await commonFunctions.inputPaymentDetailsToOrderItems(
-        driver,
-        paymentDetails
-      );
+      await commonFunctions.inputPaymentDetails(driver, paymentDetails);
     });
 
-    it("Check auto filled Billing Address data is same with registered account information", async function () {
+    it("Auto filled Billing Address and registered account information should be the same", async function () {
       await commonFunctions.checkBillingAddressIsSameWithAccountInfo(
         driver,
         user.accountInfo
       );
     });
 
-    it("Select to ship different address and click continue", async function () {
+    it("Select to ship to different address and continue to the next page", async function () {
       let shipToDifferentAddressCheckbox = await driver.findElement(
         By.xpath("//input[@type='checkbox'][@name='shippingAddressRequired']")
       );
@@ -268,7 +263,7 @@ describe("Successful End-to-end customer journey of purchasing 3 Products", func
       );
     });
 
-    it("Check default Shipping Address is the same with the registered account information", async function () {
+    it("Auto filled Shipping Address and registered account information should be the same. Continue to the next page.", async function () {
       await commonFunctions.checkShippingAddressIsSameWithAccountInfo(
         driver,
         user.accountInfo
@@ -293,7 +288,7 @@ describe("Successful End-to-end customer journey of purchasing 3 Products", func
       );
     });
 
-    it("Final comfirmation of the order", async function () {
+    it("Displayed data in the final confirmation page should match data entered in previous steps", async function () {
       const billingAddressTableRows = await driver
         .findElement(By.tagName("table"))
         .getText();
@@ -313,7 +308,7 @@ describe("Successful End-to-end customer journey of purchasing 3 Products", func
       );
     });
 
-    it("Click confirm and complete order", async function () {
+    it("Click confirm and complete submitting the order", async function () {
       await driver
         .findElement(By.xpath("//a[@class='Button'][text()='Confirm']"))
         .click();
@@ -327,7 +322,7 @@ describe("Successful End-to-end customer journey of purchasing 3 Products", func
       await driver.wait(until.urlContains("newOrder=&confirmed=true"));
     });
 
-    it("Check order information displayed in order submitted page", async function () {
+    it("The order information displayed in the order submitted page should be correct", async function () {
       const submittedOrderTable = await driver
         .findElement(By.tagName("table"))
         .getText();
@@ -382,13 +377,13 @@ describe("Successful End-to-end customer journey of purchasing 3 Products", func
   });
 
   describe("Sign in again to check the ordered information", function () {
-    it("Sign out --> This will fail because 'Sign Out' link is not displayed in the page header after user registered their new account.", async function () {
+    it("Sign out --> This will fail because 'Sign Out' link is not displayed in the page header after the user has registered their new account.", async function () {
       await commonFunctions.signout(driver);
     });
 
     it("Sign in again", async function () {
-      await commonFunctions.moveToSignInPage(driver);
-      await commonFunctions.signinWithValidAuthInfo(
+      await commonFunctions.moveToSigninPage(driver);
+      await commonFunctions.signinWithValidUsernameAndPassword(
         driver,
         user.userInfo.userId,
         user.userInfo.password
@@ -408,7 +403,7 @@ describe("Successful End-to-end customer journey of purchasing 3 Products", func
       );
     });
 
-    it("Check list in My Orders page --> This will fail because ordered time does not show its correct time(it always displayed as 12:00:00)", async function () {
+    it("The order information displayed in My Orders page should be correct --> This will fail because ordered time does not show its correct time(it is always displayed as 12:00:00)", async function () {
       expect(
         await driver
           .findElement(
@@ -429,12 +424,12 @@ describe("Successful End-to-end customer journey of purchasing 3 Products", func
       ).to.have.string(`$${expectedOrderTotalPrice}`);
     });
 
-    it("Click Order ID and move to view ordered information page", async function () {
+    it("Click Order ID and move to the page to view the details of the order information", async function () {
       await driver.findElement(By.xpath(`//a[text()='${orderId}']`)).click();
       await driver.wait(until.urlContains(`viewOrder=&orderId=${orderId}`));
     });
 
-    it("Check order information in the past ordered information page", async function () {
+    it("The details of the order information should be displayed in the page", async function () {
       const orderDetailsTable = await driver
         .findElement(By.tagName("table"))
         .getText();
@@ -480,13 +475,13 @@ describe("Successful End-to-end customer journey of purchasing 3 Products", func
   });
 });
 
-describe("Register new user account page :: Input only User Information and click Save Account Information", function () {
+describe("Input only User Information with account information empty and try to register a new user account", function () {
   let driver;
   before(async function () {
     driver = new Builder().withCapabilities(Capabilities.chrome()).build();
     await commonFunctions.accessTopPage(driver);
     await commonFunctions.enterToStore(driver);
-    await commonFunctions.moveToSignInPage(driver);
+    await commonFunctions.moveToSigninPage(driver);
     await commonFunctions.moveToRegisterNewAccountPage(driver);
   });
   after(async function () {
@@ -497,7 +492,7 @@ describe("Register new user account page :: Input only User Information and clic
     await commonFunctions.inputUserInfoInRegstrationPage(driver, user.userInfo);
   });
 
-  it("Make the Account Information form emtpy", async function () {
+  it("Make sure that Account Information forms are empty", async function () {
     await driver
       .findElement(By.xpath("//input[@name='account.firstName']"))
       .clear();
@@ -535,7 +530,7 @@ describe("Register new user account page :: Input only User Information and clic
       .clear();
   });
 
-  it("Click save account infroamtion link and should not proceed to a next page --> This will fail(internal server error) because there's no input validation", async function () {
+  it("Save the account information and verify that no page transition took place due to invalid user input --> This will fail(internal server error) because there's no input validation", async function () {
     await commonFunctions.clickSaveAccountInformationLinkForCreatingNewAccount(
       driver
     );
@@ -551,7 +546,7 @@ describe("Register new user account page :: Input only User Information and clic
   });
 });
 
-describe("Update oder item quantity to outside boundary value", function () {
+describe("Negative value given to item quantity", function () {
   let driver;
   const order = {
     category: {
@@ -610,7 +605,7 @@ describe("Update oder item quantity to outside boundary value", function () {
     );
   });
 
-  it("Add the same item again and it should be added to shopping cart --> This will fail because there's a bug with handling or validating outside boundary value", async function () {
+  it("Add the same item again and it should be added to the shopping cart --> This will fail because there's a bug with handling or validating expected boundary values", async function () {
     await commonFunctions.addItemToShoppingCart(
       driver,
       "#QuickLinks > a:nth-child(5) > img",
@@ -638,16 +633,16 @@ describe("Change user account password", function () {
     return driver.quit();
   });
 
-  it("Sign in with current username/password and should be able to sign in", async function () {
-    await commonFunctions.moveToSignInPage(driver);
-    await commonFunctions.signinWithValidAuthInfo(
+  it("Sign in with current username/password ", async function () {
+    await commonFunctions.moveToSigninPage(driver);
+    await commonFunctions.signinWithValidUsernameAndPassword(
       driver,
       user.userInfo.userId,
       user.userInfo.password
     );
   });
 
-  it("Change password from My Account page and should be able to change it successfully", async function () {
+  it("Change my password from My Account page", async function () {
     await commonFunctions.moveToMyAccountPage(driver);
     await driver
       .findElement(By.xpath("//input[@name='password']"))
@@ -662,20 +657,20 @@ describe("Change user account password", function () {
     );
   });
 
-  it("Signout and sign in with new password and it should success --> This will fail because the password has not actually changed", async function () {
+  it("Sign out and should succeed to sign in with the new password --> This will fail because the password has not actually changed", async function () {
     await commonFunctions.signout(driver);
-    await commonFunctions.moveToSignInPage(driver);
-    await commonFunctions.signinWithValidAuthInfo(
+    await commonFunctions.moveToSigninPage(driver);
+    await commonFunctions.signinWithValidUsernameAndPassword(
       driver,
       user.userInfo.userId,
       newPassword
     );
   });
 
-  it("Sign in with old password and user should failed to sign on.", async function () {
-    await commonFunctions.moveToSignInPage(driver);
+  it("User should fail to sign in with the old password", async function () {
+    await commonFunctions.moveToSigninPage(driver);
     await commonFunctions
-      .signinWithValidAuthInfo(
+      .signinWithValidUsernameAndPassword(
         driver,
         user.userInfo.userId,
         user.userInfo.password
@@ -731,7 +726,7 @@ describe("Sign in and sign out with items in the shopping cart", function () {
     return driver.quit();
   });
 
-  it("Add items to shopping cart", async function () {
+  it("Add items to the shopping cart", async function () {
     var i;
     for (i = 1; i <= order.item.quantity; i++) {
       await commonFunctions.addItemToShoppingCart(
@@ -747,9 +742,9 @@ describe("Sign in and sign out with items in the shopping cart", function () {
     }
   });
 
-  it("Sign in and check the shopping cart. Items should be in the cart.", async function () {
-    await commonFunctions.moveToSignInPage(driver);
-    await commonFunctions.signinWithValidAuthInfo(
+  it("Sign in and check the shopping cart. Items should remain in the cart.", async function () {
+    await commonFunctions.moveToSigninPage(driver);
+    await commonFunctions.signinWithValidUsernameAndPassword(
       driver,
       user.userInfo.userId,
       user.userInfo.password
@@ -768,7 +763,7 @@ describe("Sign in and sign out with items in the shopping cart", function () {
     );
   });
 
-  it("Sign out and check the shopping cart. Items should be in the cart. --> This will fail because no items remains in the cart.", async function () {
+  it("Sign out and check the shopping cart. Items should remain in the cart. --> This will fail because no items remains in the cart.", async function () {
     await commonFunctions.signout(driver);
     await commonFunctions.moveToShoppingCartPage(driver);
 
@@ -784,9 +779,9 @@ describe("Sign in and sign out with items in the shopping cart", function () {
     );
   });
 
-  it("Sign in again and check the shopping cart. Items should be in the cart. --> This will fail because no items remains in the cart.", async function () {
-    await commonFunctions.moveToSignInPage(driver);
-    await commonFunctions.signinWithValidAuthInfo(
+  it("Sign in again and check the shopping cart. Items should remain in the cart. --> This will fail because no items remains in the cart.", async function () {
+    await commonFunctions.moveToSigninPage(driver);
+    await commonFunctions.signinWithValidUsernameAndPassword(
       driver,
       user.userInfo.userId,
       user.userInfo.password
@@ -839,10 +834,10 @@ describe("Input invalid Payment Details", function () {
     return driver.quit();
   });
 
-  it("Sign in and add item to shopping cart", async function () {
+  it("Sign in and add item to the shopping cart", async function () {
     // Sign in
-    await commonFunctions.moveToSignInPage(driver);
-    await commonFunctions.signinWithValidAuthInfo(
+    await commonFunctions.moveToSigninPage(driver);
+    await commonFunctions.signinWithValidUsernameAndPassword(
       driver,
       user.userInfo.userId,
       user.userInfo.password
@@ -872,12 +867,9 @@ describe("Input invalid Payment Details", function () {
     );
   });
 
-  it("Input invalid payment details and click continue. The page should not transit to the order final confirmation page.", async function () {
+  it("Input invalid payment details and click continue. The page should not transit to the order final confirmation page due to invalid user input.", async function () {
     // Input invalid card number and expiry date in payment details form
-    await commonFunctions.inputPaymentDetailsToOrderItems(
-      driver,
-      invalidPaymentDetails
-    );
+    await commonFunctions.inputPaymentDetails(driver, invalidPaymentDetails);
 
     // Click to continue
     await driver
@@ -899,7 +891,7 @@ describe("Input invalid Payment Details", function () {
         function () {
           // when page transit successfully
           expect.fail(
-            "Failed because the page transit to order final confirmation page without validating user invalid input values."
+            "Failed because the page transits to final confirmation page without validating user's invalid input values."
           );
         },
         async function () {

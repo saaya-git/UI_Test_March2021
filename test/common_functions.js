@@ -246,7 +246,7 @@ async function clickSaveAccountInformationLinkForEditingAccount(driver) {
   await saveAccountInfoLink.click();
 }
 
-async function inputPaymentDetailsToOrderItems(driver, paymentDetailsObject) {
+async function inputPaymentDetails(driver, paymentDetailsObject) {
   let cardTypeDropdown = await driver.findElement(
     By.xpath(
       `//select[@name='order.cardType']/option[text()='${paymentDetailsObject.cardType}']`
@@ -453,12 +453,12 @@ async function signout(driver) {
   await driver.wait(until.urlIs(storeMainMenuUrl));
 }
 
-async function moveToSignInPage(driver) {
+async function moveToSigninPage(driver) {
   await driver.findElement(By.xpath("//a[text()='Sign In']")).click();
   await driver.wait(until.urlContains("signonForm="));
 }
 
-async function signinWithValidAuthInfo(driver, username, password) {
+async function signinWithValidUsernameAndPassword(driver, username, password) {
   expect(await driver.getCurrentUrl()).to.have.string("signonForm=");
 
   let usernameTextArea = await driver.findElement(
@@ -510,14 +510,14 @@ module.exports = {
   inputProfileInfoInRegstrationPage: inputProfileInfoInRegstrationPage,
   clickSaveAccountInformationLinkForCreatingNewAccount: clickSaveAccountInformationLinkForCreatingNewAccount,
   clickSaveAccountInformationLinkForEditingAccount: clickSaveAccountInformationLinkForEditingAccount,
-  inputPaymentDetailsToOrderItems: inputPaymentDetailsToOrderItems,
+  inputPaymentDetails: inputPaymentDetails,
   checkBillingAddressIsSameWithAccountInfo: checkBillingAddressIsSameWithAccountInfo,
   checkShippingAddressIsSameWithAccountInfo: checkShippingAddressIsSameWithAccountInfo,
   inputShippingAddress: inputShippingAddress,
   checkForValueInText: checkForValueInText,
   getOrderIdAndDateTimeFromSubmittedOrderForm: getOrderIdAndDateTimeFromSubmittedOrderForm,
   signout: signout,
-  moveToSignInPage: moveToSignInPage,
-  signinWithValidAuthInfo: signinWithValidAuthInfo,
+  moveToSigninPage: moveToSigninPage,
+  signinWithValidUsernameAndPassword: signinWithValidUsernameAndPassword,
   moveToMyAccountPage: moveToMyAccountPage,
 };
